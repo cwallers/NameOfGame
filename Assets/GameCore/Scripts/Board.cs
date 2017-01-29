@@ -74,18 +74,18 @@ public class Board : MonoBehaviour
         }
     }
 
-    public BitArray getPlayerBoard(bool isLocalPlayer)
+    public BitArray getPlayerBoard()
     { 
-        if(isLocalPlayer)
+        if(Game.isLocalPlayer)
         {
             return playerOne;
         }
         return playerTwo;
     }
 
-    public short getPlayerPieceCount(bool isLocalPlayer)
+    public short getPlayerPieceCount()
     {
-        if(isLocalPlayer)
+        if(Game.isLocalPlayer)
         {
             return (short)playerOne.Count;
         }

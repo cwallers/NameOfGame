@@ -45,8 +45,8 @@ public class Game : MonoBehaviour {
 
     public bool gameOver()
     {
-        //if localPlayer.getPieceCount <= 2 or !localPlayer.canMove() or draw
-        return true;
+        if (localPlayer.getPieceCount() <= 2 || !canMove()) // 
+            return true;
         //else
         return false;
     }
@@ -88,6 +88,62 @@ public class Game : MonoBehaviour {
             flyPiece();
         }
 
+    }
+
+    public bool canMove()
+    {
+
+        BitArray boardConfig = gameBoard.findEmptySpots();
+
+        BitArray playerConfig = gameBoard.getPlayerBoard();
+
+        for (short i = 0; i < 24; i++)
+        {
+            // enter if player has piece at this spot
+            if (playerConfig[i] == true)
+            {
+                for (short j = 0; i < 24; ++i)
+                {
+                    if (boardConfig[i] == true)
+                    {
+                        if (validMove(i, j))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
+
+    private bool validMove(short from, short to)
+    {
+        if (gameBoard.isLocalPlayerPieceAt(from) == true)
+        {
+            short value = 0;
+            foreach (KeyValuePair<short, short> entry in gameBoardMoves.Moves)
+            {
+                gameBoardMoves.Moves.TryGetValue(from, out value);
+                if (value == to)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //   //are you allowed to fly there?
+    private bool validFly(short from, short to)
+    {
+        if ((gameBoard.isLocalPlayerPieceAt(from) == true) &&
+             gameBoard.isEmptySpotAt(to) == true)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void finalize()
@@ -172,33 +228,7 @@ public class Game : MonoBehaviour {
     //   }
 
     //   //are you allowed to move there?
-    private bool validMove(short from, short to)
-    {
-        if (gameBoard.isLocalPlayerPieceAt(from) == true)
-        {
-            short value = 0;
-            foreach (KeyValuePair<short, short> entry in gameBoardMoves.Moves)
-            {
-                gameBoardMoves.Moves.TryGetValue(from, out value);
-                if (value == to)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    //   //are you allowed to fly there?
-    private bool validFly(short from, short to)
-    {
-        if ((gameBoard.isLocalPlayerPieceAt(from) == true) &&
-             gameBoard.isEmptySpotAt(to) == true)
-        {
-            return true;
-        }
-        return false;
-    }
+   
 
     //   //
     //   private short playerPieceCount(bool isLocalPlayer)
