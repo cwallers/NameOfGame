@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
 
@@ -11,8 +12,8 @@ public class Game : MonoBehaviour {
 
     private Board gameBoard = new Board();
     private MoveLookup gameBoardMoves = new MoveLookup();
-    private Player localPlayer;
-    private Player opponent;
+    private Player localPlayer = new Player();
+    //private Player opponent;
     private Dictionary<short, short> moves = new Dictionary<short, short>(gameInstance.gameBoardMoves.Moves);
     private Dictionary<short, Pair> mills = new Dictionary<short, Pair>(gameInstance.gameBoardMoves.Mills);
 
@@ -23,7 +24,6 @@ public class Game : MonoBehaviour {
             if (gameInstance == null)
             {
                 gameInstance = new Game();
-
             }
             return gameInstance;
         }
@@ -37,40 +37,58 @@ public class Game : MonoBehaviour {
 
     public void placePiece()
     {
-        //getLocation()
-        //if spot is empty
-            //board.placePiece()
-        //else invalid place
+        short index = localPlayer.getMoveTo();
+
+        if(gameBoard.isEmptySpotAt(index))
+        {
+            gameBoard.placePiece(index);
+
+            if(createdMill(index))
+            {
+                removePiece();
+            }
+        }
     }
 
     public bool gameOver()
     {
-        if (localPlayer.getPieceCount() <= 2 || !canMove()) // check for draw 
+        if (localPlayer.getPieceCount() <= 2 || !localPlayerCanMove())
             return true;
         else
+        {
             return false;
+        }
     }
 
     public bool phaseThree()
     {
         if (localPlayer.getPieceCount() == 3)
+        {
             return true;
-        else 
+        }
+        else
+        {
             return false;
+        }
     }
 
     public void movePiece()
     {
         short from = localPlayer.getMoveFrom();
         short to = localPlayer.getMoveTo();
+
         if(validMove(from, to))
         {
             gameBoard.movePiece(from, to);
+
+            if (createdMill(to))
+            {
+                removePiece();
+            }
         }
         else
         {
             Debug.Log("Invalid Move");
-            movePiece();
         }
     }
 
@@ -78,9 +96,15 @@ public class Game : MonoBehaviour {
     {
         short from = localPlayer.getMoveFrom();
         short to = localPlayer.getMoveTo();
+
         if (validFly(from, to))
         {
             gameBoard.movePiece(from, to);
+
+            if (createdMill(to))
+            {
+                removePiece();
+            }
         }
         else
         {
@@ -90,9 +114,8 @@ public class Game : MonoBehaviour {
 
     }
 
-    public bool canMove()
+    public bool localPlayerCanMove()
     {
-
         BitArray boardConfig = gameBoard.findEmptySpots();
 
         BitArray playerConfig = gameBoard.getPlayerBoard();
@@ -115,7 +138,34 @@ public class Game : MonoBehaviour {
             }
         }
         return false;
+    }
 
+    private bool removePiece()
+    {
+        //unfinished
+        short pieceToRemove = localPlayer.getPieceToRemove();
+
+        if (gameBoard.isLocalPlayerPieceAt(pieceToRemove) == true
+            && (!piecePartOfMill(pieceToRemove) || allPiecesPartOfMill()))
+        {
+            gameBoard.removePiece(!isLocalPlayer, pieceToRemove);
+            return true;
+        }
+        return false;
+    }
+
+    private bool createdMill(short to)
+    {
+        foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
+        {
+            if (entry.Key == to &&
+              (gameBoard.isLocalPlayerPieceAt(entry.Value.first) &&
+               gameBoard.isLocalPlayerPieceAt(entry.Value.second)))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private bool validMove(short from, short to)
@@ -146,11 +196,11 @@ public class Game : MonoBehaviour {
         return false;
     }
 
-    private bool createdMill(bool isLocalPlayer, short to)
+    private bool piecePartOfMill(short index)
     {
         foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
         {
-            if (entry.Key == to &&
+            if (entry.Key == index &&
               (gameBoard.isLocalPlayerPieceAt(entry.Value.first) &&
                gameBoard.isLocalPlayerPieceAt(entry.Value.second)))
             {
@@ -160,7 +210,18 @@ public class Game : MonoBehaviour {
         return false;
     }
 
-
+    private bool allPiecesPartOfMill()
+    {
+        int pieceCount = 0;
+        for (short i = 1; i <= 24; i++)
+        {
+            if (gameBoard.isLocalPlayerPieceAt(i) && piecePartOfMill(i))
+            {
+                pieceCount++;
+            }
+        }
+        return (pieceCount == localPlayer.getPieceCount());
+    }
 
     public void finalize()
     {
@@ -228,7 +289,20 @@ public class Game : MonoBehaviour {
     //       return (pieceCount == gameBoard.getPlayerPieceCount(isLocalPlayer));
     //   }
 
-    // 
+    //   //did the move create a mill?
+    //   private bool createdMill(bool isLocalPlayer, short to)
+    //   {
+    //       foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
+    //       {
+    //           if (entry.Key == to &&
+    //             (gameBoard.getPlayerPieceAt(isLocalPlayer, entry.Value.first) &&
+    //              gameBoard.getPlayerPieceAt(isLocalPlayer, entry.Value.second)))
+    //           {
+    //               return true;
+    //           }
+    //       }
+    //       return false;
+    //   }
 
     //   //are you allowed to move there?
    

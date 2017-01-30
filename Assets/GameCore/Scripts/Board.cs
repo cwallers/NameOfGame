@@ -121,9 +121,9 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void placePiece(bool isLocalPlayer, short index)
+    public void placePiece(short index)
     {
-        if (isLocalPlayer)
+        if (Game.isLocalPlayer)
         {
             playerOne[index - 1] = true;
         }
