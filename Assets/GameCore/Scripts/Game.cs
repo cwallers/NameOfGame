@@ -43,9 +43,20 @@ public class Game : MonoBehaviour {
         //else invalid place
     }
 
+    public bool removePiece(bool isLocalPlayer, short pieceToRemove)
+    {
+        if (gameBoard.isLocalPlayerPieceAt(pieceToRemove) == true
+            && (!piecePartOfMill(pieceToRemove) || allPiecesPartOfMill()))
+        {
+            gameBoard.removePiece(!isLocalPlayer, pieceToRemove);
+            return true;
+        }
+        return false;
+    }
+
     public bool gameOver()
     {
-        if (localPlayer.getPieceCount() <= 2 || !canMove()) // 
+        if (localPlayer.getPieceCount() <= 2 || !canMove())
             return true;
         //else
         return false;
@@ -144,6 +155,33 @@ public class Game : MonoBehaviour {
             return true;
         }
         return false;
+    }
+
+    private bool piecePartOfMill(short index)
+    {
+        foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
+        {
+            if (entry.Key == index &&
+              (gameBoard.isLocalPlayerPieceAt(entry.Value.first) &&
+               gameBoard.isLocalPlayerPieceAt(entry.Value.second)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool allPiecesPartOfMill()
+    {
+        int pieceCount = 0;
+        for (short i = 1; i <= 24; i++)
+        {
+            if (gameBoard.isLocalPlayerPieceAt(i) && piecePartOfMill(i))
+            {
+                pieceCount++;
+            }
+        }
+        return (pieceCount == localPlayer.getPieceCount());
     }
 
     public void finalize()
