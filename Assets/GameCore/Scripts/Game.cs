@@ -151,8 +151,8 @@ public class Game : MonoBehaviour {
         foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
         {
             if (entry.Key == to &&
-              (gameBoard.isLocalPlayerPieceAt( entry.Value.first) &&
-               gameBoard.isLocalPlayerPieceAt( entry.Value.second)))
+              (gameBoard.isLocalPlayerPieceAt(entry.Value.first) &&
+               gameBoard.isLocalPlayerPieceAt(entry.Value.second)))
             {
                 return true;
             }
