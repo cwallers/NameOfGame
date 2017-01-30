@@ -45,18 +45,18 @@ public class Game : MonoBehaviour {
 
     public bool gameOver()
     {
-        if (localPlayer.getPieceCount() <= 2 || !canMove()) // 
+        if (localPlayer.getPieceCount() <= 2 || !canMove()) // check for draw 
             return true;
-        //else
-        return false;
+        else
+            return false;
     }
 
     public bool phaseThree()
     {
-        //if player.getPieceCount() == 3
-        return true;
-        //else
-        return false;
+        if (localPlayer.getPieceCount() == 3)
+            return true;
+        else 
+            return false;
     }
 
     public void movePiece()
@@ -146,6 +146,22 @@ public class Game : MonoBehaviour {
         return false;
     }
 
+    private bool createdMill(bool isLocalPlayer, short to)
+    {
+        foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
+        {
+            if (entry.Key == to &&
+              (gameBoard.isLocalPlayerPieceAt( entry.Value.first) &&
+               gameBoard.isLocalPlayerPieceAt( entry.Value.second)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
     public void finalize()
     {
 
@@ -212,20 +228,7 @@ public class Game : MonoBehaviour {
     //       return (pieceCount == gameBoard.getPlayerPieceCount(isLocalPlayer));
     //   }
 
-    //   //did the move create a mill?
-    //   private bool createdMill(bool isLocalPlayer, short to)
-    //   {
-    //       foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
-    //       {
-    //           if (entry.Key == to &&
-    //             (gameBoard.getPlayerPieceAt(isLocalPlayer, entry.Value.first) &&
-    //              gameBoard.getPlayerPieceAt(isLocalPlayer, entry.Value.second)))
-    //           {
-    //               return true;
-    //           }
-    //       }
-    //       return false;
-    //   }
+    // 
 
     //   //are you allowed to move there?
    
