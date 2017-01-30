@@ -268,7 +268,6 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3bcb463722070004fac0029c9d23d06a, type: 2}
-  m_RootGameObject: {fileID: 200932608}
   m_IsPrefabParent: 0
 --- !u!1 &841016571
 GameObject:

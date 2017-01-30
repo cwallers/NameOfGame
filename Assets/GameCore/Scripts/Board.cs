@@ -42,7 +42,7 @@ public class Board : MonoBehaviour
         return playerOne.Xor(playerTwo);
     }
 
-    public bool isEmptySpotAt(short index)
+    public bool isEmptySpotAt(int index)
     {
         BitArray ans = new BitArray(playerOne.Xor(playerTwo));
         return ans[index - 1];
@@ -62,7 +62,7 @@ public class Board : MonoBehaviour
     }
 
     //if the local player controls the place on the board at index
-    public bool isLocalPlayerPieceAt(short index)
+    public bool isLocalPlayerPieceAt(int index)
     {
         if (Game.isLocalPlayer)
         {
@@ -83,19 +83,19 @@ public class Board : MonoBehaviour
         return playerTwo;
     }
 
-    public short getPlayerPieceCount()
+    public int getPlayerPieceCount()
     {
         if(Game.isLocalPlayer)
         {
-            return (short)playerOne.Count;
+            return (int)playerOne.Count;
         }
         else
         {
-            return (short)playerTwo.Count;
+            return (int)playerTwo.Count;
         }
     }
 
-    public void movePiece(short from, short to)
+    public void movePiece(int from, int to)
     {
         if (Game.isLocalPlayer)
         {
@@ -109,7 +109,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void removePiece(bool isLocalPlayer, short index)
+    public void removePiece(bool isLocalPlayer, int index)
     {
         if (isLocalPlayer)
         {
@@ -121,7 +121,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void placePiece(short index)
+    public void placePiece(int index)
     {
         if (Game.isLocalPlayer)
         {

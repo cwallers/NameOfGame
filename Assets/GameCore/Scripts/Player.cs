@@ -4,34 +4,34 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    private short moveTo;
-    private short moveFrom;
-    private short pieceCount;
+    private int moveTo;
+    private int moveFrom;
+    private int pieceCount;
 
     public Player()
     {
         pieceCount = 9;
     }
 
-    public short getMoveFrom()
+    public int getMoveFrom()
     {
         //set moveFrom from the GUI, the network, or the AI
         return moveFrom;
     }
-    public short getMoveTo()
+    public int getMoveTo()
     {
         //set moveTo from the GUI, the network, or the AI
         return moveTo;
     }
 
-    public short getPieceToRemove()
+    public int getPieceToRemove()
     {
-        short pieceToRemove = 0;
+        int pieceToRemove = 0;
         //set pieceToRemove from the GUI, the network, or the AI
         return pieceToRemove;
     }
 
-    public short getPieceCount()
+    public int getPieceCount()
     {
         return pieceCount;
     }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Eppy;
 
 public class Game : MonoBehaviour {
 
@@ -13,9 +14,8 @@ public class Game : MonoBehaviour {
     private Board gameBoard = new Board();
     private MoveLookup gameBoardMoves = new MoveLookup();
     private Player localPlayer = new Player();
-    //private Player opponent;
-    private Dictionary<short, short> moves = new Dictionary<short, short>(gameInstance.gameBoardMoves.Moves);
-    private Dictionary<short, Pair> mills = new Dictionary<short, Pair>(gameInstance.gameBoardMoves.Mills);
+    private List<Tuple<int, int>> moves = new List<Tuple<int, int>>(gameInstance.gameBoardMoves.Moves);
+    private List<Tuple<int, int, int>> mills = new List<Tuple<int, int, int>>(gameInstance.gameBoardMoves.Mills);
 
     public static Game getInstance
     {
@@ -37,7 +37,7 @@ public class Game : MonoBehaviour {
 
     public void placePiece()
     {
-        short index = localPlayer.getMoveTo();
+        int index = localPlayer.getMoveTo();
 
         if(gameBoard.isEmptySpotAt(index))
         {
@@ -74,8 +74,8 @@ public class Game : MonoBehaviour {
 
     public void movePiece()
     {
-        short from = localPlayer.getMoveFrom();
-        short to = localPlayer.getMoveTo();
+        int from = localPlayer.getMoveFrom();
+        int to = localPlayer.getMoveTo();
 
         if(validMove(from, to))
         {
@@ -94,8 +94,8 @@ public class Game : MonoBehaviour {
 
     public void flyPiece()
     {
-        short from = localPlayer.getMoveFrom();
-        short to = localPlayer.getMoveTo();
+        int from = localPlayer.getMoveFrom();
+        int to = localPlayer.getMoveTo();
 
         if (validFly(from, to))
         {
@@ -120,12 +120,12 @@ public class Game : MonoBehaviour {
 
         BitArray playerConfig = gameBoard.getPlayerBoard();
 
-        for (short i = 0; i < 24; i++)
+        for (int i = 0; i < 24; i++)
         {
             // enter if player has piece at this spot
             if (playerConfig[i] == true)
             {
-                for (short j = 0; i < 24; ++i)
+                for (int j = 0; i < 24; ++i)
                 {
                     if (boardConfig[i] == true)
                     {
@@ -140,10 +140,15 @@ public class Game : MonoBehaviour {
         return false;
     }
 
+    public void finalize()
+    {
+
+    }
+
     private bool removePiece()
     {
         //unfinished
-        short pieceToRemove = localPlayer.getPieceToRemove();
+        int pieceToRemove = localPlayer.getPieceToRemove();
 
         if (gameBoard.isLocalPlayerPieceAt(pieceToRemove) == true
             && (!piecePartOfMill(pieceToRemove) || allPiecesPartOfMill()))
@@ -154,13 +159,13 @@ public class Game : MonoBehaviour {
         return false;
     }
 
-    private bool createdMill(short to)
+    private bool createdMill(int to)
     {
-        foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
+        foreach (Tuple<int, int, int> entry in gameBoardMoves.Mills)
         {
-            if (entry.Key == to &&
-              (gameBoard.isLocalPlayerPieceAt(entry.Value.first) &&
-               gameBoard.isLocalPlayerPieceAt(entry.Value.second)))
+            if (entry.Item1 == to &&
+              (gameBoard.isLocalPlayerPieceAt(entry.Item2) &&
+               gameBoard.isLocalPlayerPieceAt(entry.Item3)))
             {
                 return true;
             }
@@ -168,15 +173,13 @@ public class Game : MonoBehaviour {
         return false;
     }
 
-    private bool validMove(short from, short to)
+    private bool validMove(int from, int to)
     {
         if (gameBoard.isLocalPlayerPieceAt(from) == true)
         {
-            short value = 0;
-            foreach (KeyValuePair<short, short> entry in gameBoardMoves.Moves)
+            foreach (Tuple<int, int> entry in gameBoardMoves.Moves)
             {
-                gameBoardMoves.Moves.TryGetValue(from, out value);
-                if (value == to)
+                if (from == entry.Item1 && gameBoard.isEmptySpotAt(to))
                 {
                     return true;
                 }
@@ -186,7 +189,7 @@ public class Game : MonoBehaviour {
     }
 
     //   //are you allowed to fly there?
-    private bool validFly(short from, short to)
+    private bool validFly(int from, int to)
     {
         if ((gameBoard.isLocalPlayerPieceAt(from) == true) &&
              gameBoard.isEmptySpotAt(to) == true)
@@ -196,13 +199,13 @@ public class Game : MonoBehaviour {
         return false;
     }
 
-    private bool piecePartOfMill(short index)
+    private bool piecePartOfMill(int index)
     {
-        foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
+        foreach (Tuple<int, int, int> entry in gameBoardMoves.Mills)
         {
-            if (entry.Key == index &&
-              (gameBoard.isLocalPlayerPieceAt(entry.Value.first) &&
-               gameBoard.isLocalPlayerPieceAt(entry.Value.second)))
+            if (entry.Item1 == index &&
+              (gameBoard.isLocalPlayerPieceAt(entry.Item2) &&
+               gameBoard.isLocalPlayerPieceAt(entry.Item3)))
             {
                 return true;
             }
@@ -213,7 +216,7 @@ public class Game : MonoBehaviour {
     private bool allPiecesPartOfMill()
     {
         int pieceCount = 0;
-        for (short i = 1; i <= 24; i++)
+        for (int i = 1; i <= 24; i++)
         {
             if (gameBoard.isLocalPlayerPieceAt(i) && piecePartOfMill(i))
             {
@@ -223,129 +226,6 @@ public class Game : MonoBehaviour {
         return (pieceCount == localPlayer.getPieceCount());
     }
 
-    public void finalize()
-    {
-
-    }
-
     private Game()
     { }
-
-    //   //gets instance of the Board
-    //   public Game()
-    //   {
-    //        gameBoard = gameBoard.getInstance;
-    //   }
-
-    //   //removes a piece
-    //   public bool removePiece(bool isLocalPlayer, short pieceToRemove)
-    //   {
-    //       if (gameBoard.getPlayerPieceAt(!isLocalPlayer, pieceToRemove) == true
-    //           && (!piecePartOfMill(!isLocalPlayer, pieceToRemove) || allPiecesPartOfMill(!isLocalPlayer)))
-    //       {
-    //           gameBoard.removePiece(!isLocalPlayer, pieceToRemove);
-    //           return true;
-    //       }
-    //       return false;
-    //   }
-
-    //   //places a piece in phase 1
-    //   public bool placePiece(bool isLocalPlayer, short index)
-    //   {
-    //       if (gameBoard.findEmptySpotAt(index) == false)
-    //       {
-    //           gameBoard.placePiece(isLocalPlayer, index);
-    //           return true;
-    //       }
-    //       return false;
-    //   }
-
-    //   //checks to see if the piece is part of a mill
-    //   private bool piecePartOfMill(bool isLocalPlayer, short index)
-    //   {
-    //       foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
-    //       {
-    //           if(entry.Key == index && 
-    //             (gameBoard.getPlayerPieceAt(isLocalPlayer, entry.Value.first) && 
-    //              gameBoard.getPlayerPieceAt(isLocalPlayer, entry.Value.second)))
-    //           {
-    //               return true;
-    //           }
-    //       }
-    //       return false;
-    //   }
-
-    //   //i don't know
-    //   private bool allPiecesPartOfMill(bool isLocalPlayer)
-    //   {
-    //       int pieceCount = 0;
-    //       for (short i = 1; i <= 24; i++)
-    //       {
-    //           if (gameBoard.getPlayerPieceAt(isLocalPlayer, i) && piecePartOfMill(isLocalPlayer, i))
-    //           {
-    //               pieceCount++;
-    //           }
-    //       }
-    //       return (pieceCount == gameBoard.getPlayerPieceCount(isLocalPlayer));
-    //   }
-
-    //   //did the move create a mill?
-    //   private bool createdMill(bool isLocalPlayer, short to)
-    //   {
-    //       foreach (KeyValuePair<short, Pair> entry in gameBoardMoves.Mills)
-    //       {
-    //           if (entry.Key == to &&
-    //             (gameBoard.getPlayerPieceAt(isLocalPlayer, entry.Value.first) &&
-    //              gameBoard.getPlayerPieceAt(isLocalPlayer, entry.Value.second)))
-    //           {
-    //               return true;
-    //           }
-    //       }
-    //       return false;
-    //   }
-
-    //   //are you allowed to move there?
-   
-
-    //   //
-    //   private short playerPieceCount(bool isLocalPlayer)
-    //   {
-    //       return (short)gameBoard.getPlayerPieceCount(isLocalPlayer);
-    //   }
-
-    //   //is the player able to move?
-    //   private bool playerCanMove(bool isLocalPlayer)
-    //   {
-    //       BitArray boardConfig = gameBoard.findEmptySpots();
-    //       BitArray playerConfig = gameBoard.getPlayerBoard(isLocalPlayer);
-
-    //       for (short i = 0; i < 24; i++)
-    //       {
-    //           // enter if player has piece at this spot
-    //           if (playerConfig[i] == true)
-    //           {
-    //               for(short j = 0; i < 24; ++i)
-    //               {
-    //                   if(boardConfig[i] == true)
-    //                   {
-    //                       if(validMove(isLocalPlayer, i, j))
-    //                       {
-    //                           return true;
-    //                       }
-    //                   }
-    //               }
-    //           }
-    //       }
-    //       return false;
-    //   }
-
-    //   // Use this for initialization
-    //   void Start () {
-
-    //}
-
-    //// Update is called once per frame
-    //void Update () {
-
-    //}
 }
