@@ -109,7 +109,6 @@ public class Game : MonoBehaviour {
         else
         {
             Debug.Log("Invalid Fly");
-            flyPiece();
         }
 
     }
