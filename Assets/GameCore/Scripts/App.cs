@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class App : MonoBehaviour {
 
+
+    //public GameObject helpImage;
+
+
     void play()
     {
         Game game = Game.getInstance;
+
+
 
         //game.initialize();
 
