@@ -7,16 +7,18 @@ public class Player : MonoBehaviour {
 
     public static bool PlayerGoFirst = true;
     public static bool firstPlayer = true;
-    public static int aILevel;
+    public enum aILevel { easy, difficult};
     public static int characterSelectionPlayer; //enum list of characters
-
 
     private int moveTo;
     private int moveFrom;
     private int pieceCount;
 
+    public static aILevel level = 0; //by default
+
     public static Player instance;
-    
+   
+
     void Awake()
     {
         if (instance == null)
@@ -28,22 +30,18 @@ public class Player : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+
+        if (level == aILevel.easy)
+        {
+            //aIScript = gameObject.AddComponent<AIScript>();
+
+        }
+        else if  (level == aILevel.difficult)
+        {
+            //aIScript = gameObject.AddComponent<AIScript>();
+        }
+
     }
-
-
-    //private void Start()
-    //{
-    //    GameObject gameOb = new GameObject();
-    //    InputField input = gameObject.GetComponent<InputField>();
-    //    Debug.Log(input);
-    //    var se = new InputField.SubmitEvent();
-    //    //se.AddListener(SubmitInput);
-    //    //input.onEndEdit = se;
-    //}
-    ////private void SubmitInput(string arg0)
-    //{
-    //    Debug.Log(arg0);
-    //}
 
 
     public Player()
@@ -74,4 +72,36 @@ public class Player : MonoBehaviour {
     {
         return pieceCount;
     }
+
+    public int[] getAIMove()
+    {
+        print("Calling AI");
+        int[] move = null;
+
+        if (level == aILevel.easy)
+        {
+            //call A1
+        }
+        else if (level == aILevel.difficult)
+        {
+            //call A1
+        }
+        
+       
+        return move;
+    }
+
+    //private void Start()
+    //{
+    //    GameObject gameOb = new GameObject();
+    //    InputField input = gameObject.GetComponent<InputField>();
+    //    Debug.Log(input);
+    //    var se = new InputField.SubmitEvent();
+    //    //se.AddListener(SubmitInput);
+    //    //input.onEndEdit = se;
+    //}
+    ////private void SubmitInput(string arg0)
+    //{
+    //    Debug.Log(arg0);
+    //}
 }

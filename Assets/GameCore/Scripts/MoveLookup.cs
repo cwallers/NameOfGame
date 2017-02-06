@@ -126,16 +126,7 @@ public class MoveLookup : MonoBehaviour {
         Tuple.Create(23, 22, 23),
         Tuple.Create(23, 3, 15),
     };
-
-
-
-    // Use this for initialization
-    void Start () {
 		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
+
+
