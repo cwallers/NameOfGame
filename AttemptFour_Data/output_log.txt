@@ -9,6 +9,8 @@ Direct3D:
 Begin MonoManager ReloadAssembly
 Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\UnityEngine.dll (this message is harmless)
 Loading C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
 Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\Assembly-CSharp.dll (this message is harmless)
 Loading C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\UnityEngine.UI.dll (this message is harmless)
@@ -17,33 +19,37 @@ Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFou
 Loading C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
 Loading C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-- Completed reload, in  0.097 seconds
+Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\Photon3Unity3D.dll (this message is harmless)
+Loading C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\Photon3Unity3D.dll into Unity Child Domain
+- Completed reload, in  0.152 seconds
 Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\System.dll (this message is harmless)
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 4.005410 ms
-DontDestroyOnLoad only work for root GameObjects or components on root GameObjects.
+UnloadTime: 1.619099 ms
+room created
  
-(Filename:  Line: 447)
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.334281 ms
-
-Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 980.
-Total: 0.728723 ms (FindLiveObjects: 0.029080 ms CreateObjectMapping: 0.025659 ms MarkObjects: 0.659443 ms  DeleteObjects: 0.014540 ms)
-
-Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.345972 ms
-
-Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 980.
-Total: 0.731288 ms (FindLiveObjects: 0.027797 ms CreateObjectMapping: 0.024376 ms MarkObjects: 0.674410 ms  DeleteObjects: 0.004704 ms)
-
-DontDestroyOnLoad only work for root GameObjects or components on root GameObjects.
+Joined room: my room
  
-(Filename:  Line: 447)
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at NetworkManager.OnJoinedRoom () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+NetworkingPeer:SendMonoMessage(PhotonNetworkingMessage, Object[])
+NetworkingPeer:OnEvent(EventData)
+ExitGames.Client.Photon.PeerBase:DeserializeMessageAndCallback(Byte[])
+ExitGames.Client.Photon.EnetPeer:DispatchIncomingCommands()
+ExitGames.Client.Photon.PhotonPeer:DispatchIncomingCommands()
+PhotonHandler:Update()
+ 
+(Filename:  Line: -1)
 
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 35d4 -> priority: 1 
+  Thread -> id: 43cc -> priority: 1 

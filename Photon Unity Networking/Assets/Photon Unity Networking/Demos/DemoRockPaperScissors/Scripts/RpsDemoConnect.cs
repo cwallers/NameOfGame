@@ -84,7 +84,7 @@ public class RpsDemoConnect : PunBehaviour
     public override void OnJoinedRoom()
     {
 		Debug.Log("Joined room: " + PhotonNetwork.room.Name);
-        this.previousRoom = PhotonNetwork.room.Name;
+        previousRoom = PhotonNetwork.room.Name;
 
     }
 

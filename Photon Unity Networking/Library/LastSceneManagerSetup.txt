@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Launcher.unity
+- path: Assets/Photon Unity Networking/Demos/DemoRockPaperScissors/DemoRPS-Scene.unity
   isLoaded: 1
   isActive: 1
