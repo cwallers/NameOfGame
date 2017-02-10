@@ -8,6 +8,10 @@ using Eppy;
 
 public class MoveLookup : MonoBehaviour {
 
+    public MoveLookup()
+    {
+
+    }
 
      public List<Tuple<int, int>> Moves = new List<Tuple<int, int>>()
     {

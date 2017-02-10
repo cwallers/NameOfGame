@@ -11,6 +11,7 @@ public class NetworkManager : PunBehaviour
 
     public GameObject playerPrefab;
 
+    private Game gameInstance = Game.getInstance;
     private RoomInfo[] roomsList;
     private PunTurnManager turnManager;
     public InputField InputField;
@@ -23,7 +24,15 @@ public class NetworkManager : PunBehaviour
     {
         connect();
     }
+    void Awake()
+    {
+        PhotonNetwork.autoJoinLobby = true;
+    }
 
+    // Update is called once per frame
+    void Update()
+    {
+    }
     public override void OnConnectedToMaster()
     {
         // after connect 
@@ -46,14 +55,14 @@ public class NetworkManager : PunBehaviour
     public override void OnJoinedRoom()
     {
         Debug.Log("Joined room: " + PhotonNetwork.room.Name);
-        PhotonNetwork.Instantiate(playerPrefab.name, Vector3.up * 5, Quaternion.identity, 0);
+        //PhotonNetwork.Instantiate(playerPrefab.name, Vector3.up * 5, Quaternion.identity, 0);
         previousRoom = PhotonNetwork.room.Name;
 
     }
 
     public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)
     {
-        this.previousRoom = null;
+        previousRoom = null;
     }
 
     public override void OnConnectionFail(DisconnectCause cause)
@@ -130,13 +139,8 @@ public class NetworkManager : PunBehaviour
         return false;
     }
 
-    void Awake()
-    {
-        PhotonNetwork.autoJoinLobby = true;
-    }
-
-    // Update is called once per frame
-    void Update()
+    [PunRPC]
+    public void sendPlacePiece(int moveToIndex)
     {
     }
 }

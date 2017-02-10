@@ -6,24 +6,12 @@ using UnityEngine;
 public class Board : MonoBehaviour
 {
 
-    private BitArray playerOne;
-    private BitArray playerTwo;
+    private BitArray playerOne = new BitArray(24);
+    private BitArray playerTwo = new BitArray(24);
     private static Board boardInstance = null;
 
     public Board()
     {}
-
-    public void changePlayer()
-    {
-        if (Game.isLocalPlayer)
-        {
-            Game.isLocalPlayer = false;
-        }
-        else
-        {
-            Game.isLocalPlayer = true;
-        }
-    }
 
     private Board(BitArray first, BitArray second)
     {
@@ -44,8 +32,7 @@ public class Board : MonoBehaviour
 
     public bool isEmptySpotAt(int index)
     {
-        BitArray ans = new BitArray(playerOne.Xor(playerTwo));
-        return ans[index - 1];
+        return playerOne.Xor(playerTwo)[index];
     }
 
     public Board getInstance
@@ -66,11 +53,11 @@ public class Board : MonoBehaviour
     {
         if (Game.isLocalPlayer)
         {
-            return playerOne[index - 1];
+            return playerOne[index];
         }
         else
         {
-            return playerTwo[index - 1];
+            return playerTwo[index];
         }
     }
 

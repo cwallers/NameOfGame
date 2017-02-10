@@ -8,15 +8,19 @@ using Eppy;
 public class Game : Photon.MonoBehaviour {
 
     public static bool isLocalPlayer = true;
-    private static Game gameInstance = null;
+
+    private static Game gameInstance = getInstance;
 
     private int input, pieceCount, moveToIndex;
     private Board gameBoard = new Board();
     private MoveLookup gameBoardMoves = new MoveLookup();
     private Player localPlayer = new Player();
-    private List<Tuple<int, int>> moves = new List<Tuple<int, int>>(gameInstance.gameBoardMoves.Moves);
-    private List<Tuple<int, int, int>> mills = new List<Tuple<int, int, int>>(gameInstance.gameBoardMoves.Mills);
+    private ButtonHandler gameSpaces = new ButtonHandler();
 
+    //private List<Tuple<int, int>> moves = new List<Tuple<int, int>>(gameInstance.gameBoardMoves.Moves);
+    //private List<Tuple<int, int, int>> mills = new List<Tuple<int, int, int>>(gameInstance.gameBoardMoves.Mills);
+
+    private Game() { }
     public static Game getInstance
     {
         get
@@ -31,64 +35,49 @@ public class Game : Photon.MonoBehaviour {
 
     private void Start()
     {
-        GameObject gameOb = new GameObject();
-        InputField input = gameObject.GetComponent<InputField>();
-        var se = new InputField.SubmitEvent();
-        se.AddListener(SubmitInput);
-        input.onEndEdit = se;
-    }
-
-    private void Update()
-    {
 
     }
 
-    private void SubmitInput(string arg0)
+    public void placePiece()
     {
-        input = int.Parse(arg0);
-        UpdatePlacePiece();
-        Debug.Log("data entered");
-    }
+        Debug.Log("place piece");
 
-    public void initialize()
-    {
+        int index = gameSpaces.getIndexClicked();
 
-    }
+        Debug.Log(index);
 
-    [PunRPC]
-    public void placePiece(int index)
-    {
-        if(gameBoard.isEmptySpotAt(index))
+        if (gameBoard.isEmptySpotAt(index))
         {
             gameBoard.placePiece(index);
 
             if (createdMill(index))
             {
-                //removePiece();
+                removePiece();
             }
+            changePlayer();
         }
     }
 
-    public void UpdatePlacePiece()
-    {
-        if (!photonView.isMine)
-        {
-            return;
-        }
-        if (PhotonNetwork.offlineMode)
-        {
-            //ai place piece
-        }
-        //send move
-        else
-        {
-            photonView.RPC(
-                "placePiece",
-                PhotonTargets.OthersBuffered,
-                moveToIndex
-                );
-        }
-    }
+    //public void UpdatePlacePiece()
+    //{
+    //    if (!photonView.isMine)
+    //    {
+    //        return;
+    //    }
+    //    if (PhotonNetwork.offlineMode)
+    //    {
+    //        //ai place piece
+    //    }
+    //    //send move
+    //    else
+    //    {
+    //        photonView.RPC(
+    //            "placePiece",
+    //            PhotonTargets.OthersBuffered,
+    //            moveToIndex
+    //            );
+    //    }
+    //}
 
     public bool gameOver()
     {
@@ -114,6 +103,7 @@ public class Game : Photon.MonoBehaviour {
 
     public void movePiece()
     {
+        Debug.Log("move piece");
         int from = localPlayer.getMoveFrom();
         int to = localPlayer.getMoveTo();
 
@@ -125,6 +115,7 @@ public class Game : Photon.MonoBehaviour {
             {
                 removePiece();
             }
+            changePlayer();
         }
         else
         {
@@ -134,8 +125,10 @@ public class Game : Photon.MonoBehaviour {
 
     public void flyPiece()
     {
-        int from = localPlayer.getMoveFrom();
-        int to = localPlayer.getMoveTo();
+        Debug.Log("move piece");
+
+        int from = gameSpaces.getIndexClicked();
+        int to = gameSpaces.getIndexClicked();
 
         if (validFly(from, to))
         {
@@ -145,6 +138,7 @@ public class Game : Photon.MonoBehaviour {
             {
                 removePiece();
             }
+            changePlayer();
         }
         else
         {
@@ -186,8 +180,9 @@ public class Game : Photon.MonoBehaviour {
 
     private bool removePiece()
     {
-        //unfinished
-        int pieceToRemove = localPlayer.getPieceToRemove();
+        Debug.Log("remove piece");
+
+        int pieceToRemove = gameSpaces.getIndexClicked();
 
         if (gameBoard.isLocalPlayerPieceAt(pieceToRemove) == true
             && (!piecePartOfMill(pieceToRemove) || allPiecesPartOfMill()))
@@ -227,7 +222,6 @@ public class Game : Photon.MonoBehaviour {
         return false;
     }
 
-    //   //are you allowed to fly there?
     private bool validFly(int from, int to)
     {
         if ((gameBoard.isLocalPlayerPieceAt(from) == true) &&
@@ -265,6 +259,15 @@ public class Game : Photon.MonoBehaviour {
         return (pieceCount == localPlayer.getPieceCount());
     }
 
-    private Game()
-    { }
+    public void changePlayer()
+    {
+        if (isLocalPlayer)
+        {
+            isLocalPlayer = false;
+        }
+        else
+        {
+            isLocalPlayer = true;
+        }
+    }
 }

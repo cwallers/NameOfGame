@@ -7,18 +7,18 @@ public class App : MonoBehaviour {
 
     //public GameObject helpImage;
 
+    private void Start()
+    {
+        play();
+    }
 
     void play()
     {
         Game game = Game.getInstance;
 
-
-
-        //game.initialize();
-
         for (short i = 0; i < 9; ++i)
         {
-            //game.placePiece();
+            game.placePiece();
         }
 
         while (!game.gameOver())
@@ -32,6 +32,5 @@ public class App : MonoBehaviour {
                 game.movePiece();
             }
         }
-        //game.finalize();
     }
 }
