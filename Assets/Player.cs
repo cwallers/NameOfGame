@@ -5,10 +5,14 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
+    public static bool isSinglePlayer = true;
     public static bool PlayerGoFirst = true;
     public static bool firstPlayer = true;
     public enum aILevel { easy, difficult};
-    public static int characterSelectionPlayer; //enum list of characters
+    public enum characterSelection {name1, name2, name3, name4} //change for names of characters later
+    public static characterSelection characterLocalPlayer; //enum list of characters
+    public static characterSelection characterOpponentPlayer;
+
 
     private int moveTo;
     private int moveFrom;

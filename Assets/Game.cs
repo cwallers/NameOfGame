@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,11 @@ using Eppy;
 
 public class Game : Photon.MonoBehaviour {
 
-    public static bool isLocalPlayer = true;
+    private bool isSinglePlayer;
 
-    private static Game gameInstance = getInstance;
+    public static bool isLocalPlayerTurn = true;
+
+    public static Game gameInstance = null;
 
     private int input, pieceCount, moveToIndex;
     private Board gameBoard = new Board();
@@ -20,18 +23,46 @@ public class Game : Photon.MonoBehaviour {
     //private List<Tuple<int, int>> moves = new List<Tuple<int, int>>(gameInstance.gameBoardMoves.Moves);
     //private List<Tuple<int, int, int>> mills = new List<Tuple<int, int, int>>(gameInstance.gameBoardMoves.Mills);
 
-    private Game() { }
-    public static Game getInstance
+
+    private void Awake()
     {
-        get
+        if (gameInstance == null)
         {
-            if (gameInstance == null)
-            {
-                gameInstance = new Game();
-            }
-            return gameInstance;
+            gameInstance = this;
         }
-    }
+        else if (gameInstance != this)
+            Destroy(gameInstance);
+
+        isSinglePlayer = Player.isSinglePlayer;
+
+        if (isSinglePlayer)
+        {
+            if (Player.PlayerGoFirst)
+            {
+                isLocalPlayerTurn = true;
+                //change UI turn indicator
+
+            }
+            else
+                isLocalPlayerTurn = false;
+            //change UI turn indicator
+        }//if multiplayer
+        else 
+        {
+            isLocalPlayerTurn = true;
+
+            if (Player.firstPlayer)
+            {
+                //change UI turn indicator 
+            }
+            else { }
+                //change UI turn indicator
+
+        }
+    } 
+
+            
+    
 
     private void Start()
     {
@@ -81,7 +112,7 @@ public class Game : Photon.MonoBehaviour {
 
     public bool gameOver()
     {
-        if (localPlayer.getPieceCount() <= 2 || !localPlayerCanMove())
+        if (localPlayer.getPieceCount() <= 2 || !playerCanMove())
             return true;
         else
         {
@@ -147,7 +178,7 @@ public class Game : Photon.MonoBehaviour {
 
     }
 
-    public bool localPlayerCanMove()
+    public bool playerCanMove()
     {
         BitArray boardConfig = gameBoard.findEmptySpots();
 
@@ -187,7 +218,7 @@ public class Game : Photon.MonoBehaviour {
         if (gameBoard.isLocalPlayerPieceAt(pieceToRemove) == true
             && (!piecePartOfMill(pieceToRemove) || allPiecesPartOfMill()))
         {
-            gameBoard.removePiece(!isLocalPlayer, pieceToRemove);
+            gameBoard.removePiece(!isLocalPlayerTurn, pieceToRemove);
             return true;
         }
         return false;
@@ -261,13 +292,43 @@ public class Game : Photon.MonoBehaviour {
 
     public void changePlayer()
     {
-        if (isLocalPlayer)
+        if (isLocalPlayerTurn && playerCanMove ()) // also check if it a draw ?
         {
-            isLocalPlayer = false;
+            isLocalPlayerTurn = false;
+            
+            if (Player.firstPlayer)
+            {
+                //change turn indicator
+            }
+            else
+            {
+                //change turn indicator
+            }
+
         }
-        else
+        else if (!isLocalPlayerTurn && playerCanMove())
         {
-            isLocalPlayer = true;
+            isLocalPlayerTurn = true;
+
+            if (isSinglePlayer)
+            {
+                //change UI turn indicator
+
+            }
+            else
+            {
+                if (Player.firstPlayer)
+                {
+                    //change UI turn indicator
+                }
+                else
+                {
+                    //change UI turn indicator
+                }
+
+            }
+
+
         }
     }
 }

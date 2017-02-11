@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using UnityEngine;
+using UnityEngine.UI;
+using Eppy;
 
 public class Board : MonoBehaviour
 {
@@ -51,7 +54,7 @@ public class Board : MonoBehaviour
     //if the local player controls the place on the board at index
     public bool isLocalPlayerPieceAt(int index)
     {
-        if (Game.isLocalPlayer)
+        if (Game.isLocalPlayerTurn)
         {
             return playerOne[index];
         }
@@ -63,7 +66,7 @@ public class Board : MonoBehaviour
 
     public BitArray getPlayerBoard()
     { 
-        if(Game.isLocalPlayer)
+        if(Game.isLocalPlayerTurn)
         {
             return playerOne;
         }
@@ -72,7 +75,7 @@ public class Board : MonoBehaviour
 
     public int getPlayerPieceCount()
     {
-        if(Game.isLocalPlayer)
+        if(Game.isLocalPlayerTurn)
         {
             return (int)playerOne.Count;
         }
@@ -84,7 +87,7 @@ public class Board : MonoBehaviour
 
     public void movePiece(int from, int to)
     {
-        if (Game.isLocalPlayer)
+        if (Game.isLocalPlayerTurn)
         {
             playerOne[from - 1] = false;
             playerOne[to - 1] = true;
@@ -110,7 +113,7 @@ public class Board : MonoBehaviour
 
     public void placePiece(int index)
     {
-        if (Game.isLocalPlayer)
+        if (Game.isLocalPlayerTurn)
         {
             playerOne[index - 1] = true;
         }
