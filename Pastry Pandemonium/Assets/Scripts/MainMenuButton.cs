@@ -10,7 +10,7 @@ public class MainMenuButton : MonoBehaviour {
 
     public void OnMouseEnter()
     {
-        LeanTween.scale(current, new Vector3(.45f, .45f, .45f), .3f);
+        LeanTween.scale(current, new Vector3(.45f, .45f, .45f), .075f);
     }
 
     public void OnMouseUp()
@@ -22,7 +22,7 @@ public class MainMenuButton : MonoBehaviour {
     }
     public void OnMouseExit()
     {
-        LeanTween.scale(current, new Vector3(0.3615471f, 0.3615471f, 0.3615471f), .075f);
+        LeanTween.scale(current, new Vector3(0.3615471f, 0.3615471f, 0.3615471f), .05f);
 
     }
 
