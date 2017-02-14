@@ -11,7 +11,7 @@ public class NetworkManager : PunBehaviour
 
     public GameObject playerPrefab;
 
-    private Game gameInstance = Game.getInstance;
+    private Game gameInstance = new Game();
     private RoomInfo[] roomsList;
     private PunTurnManager turnManager;
     public InputField InputField;
