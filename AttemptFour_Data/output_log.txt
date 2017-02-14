@@ -23,15 +23,37 @@ Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFou
 Loading C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
 Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\Photon3Unity3D.dll (this message is harmless)
 Loading C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\Photon3Unity3D.dll into Unity Child Domain
-- Completed reload, in  0.152 seconds
+- Completed reload, in  0.136 seconds
 Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Rusty\Documents\Unity\Capstone\NameOfGame\AttemptFour_Data\Managed\System.dll (this message is harmless)
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.619099 ms
-room created
+The referenced script on this Behaviour (Game Object 'Player') is missing!
+ 
+(Filename:  Line: 1754)
+
+The referenced script on this Behaviour (Game Object 'GameObject') is missing!
+ 
+(Filename:  Line: 1754)
+
+UnloadTime: 1.409121 ms
+place piece
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+NullReferenceException
+  at (wrapper managed-to-native) UnityEngine.MonoBehaviour:StartCoroutine (string,object)
+  at UnityEngine.MonoBehaviour.StartCoroutine (System.String methodName) [0x00000] in <filename unknown>:0 
+  at ButtonHandler.getIndexClicked () [0x00000] in <filename unknown>:0 
+  at Game.placePiece () [0x00000] in <filename unknown>:0 
+  at App.play () [0x00000] in <filename unknown>:0 
+  at App.Start () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+room joined
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
@@ -39,17 +61,5 @@ Joined room: my room
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-NullReferenceException: Object reference not set to an instance of an object
-  at NetworkManager.OnJoinedRoom () [0x00000] in <filename unknown>:0 
-UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
-NetworkingPeer:SendMonoMessage(PhotonNetworkingMessage, Object[])
-NetworkingPeer:OnEvent(EventData)
-ExitGames.Client.Photon.PeerBase:DeserializeMessageAndCallback(Byte[])
-ExitGames.Client.Photon.EnetPeer:DispatchIncomingCommands()
-ExitGames.Client.Photon.PhotonPeer:DispatchIncomingCommands()
-PhotonHandler:Update()
- 
-(Filename:  Line: -1)
-
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 43cc -> priority: 1 
+  Thread -> id: 342c -> priority: 1 

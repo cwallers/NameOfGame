@@ -18,7 +18,6 @@ public class Game : Photon.MonoBehaviour {
     private Board gameBoard = new Board();
     private MoveLookup gameBoardMoves = new MoveLookup();
     private Player localPlayer = new Player();
-    private ButtonHandler gameSpaces = new ButtonHandler();
 
     //private List<Tuple<int, int>> moves = new List<Tuple<int, int>>(gameInstance.gameBoardMoves.Moves);
     //private List<Tuple<int, int, int>> mills = new List<Tuple<int, int, int>>(gameInstance.gameBoardMoves.Mills);
@@ -72,10 +71,8 @@ public class Game : Photon.MonoBehaviour {
     public void placePiece()
     {
         Debug.Log("place piece");
-
-        int index = gameSpaces.getIndexClicked();
-
-        Debug.Log(index);
+   
+        int index = 0;
 
         if (gameBoard.isEmptySpotAt(index))
         {
@@ -158,8 +155,8 @@ public class Game : Photon.MonoBehaviour {
     {
         Debug.Log("move piece");
 
-        int from = gameSpaces.getIndexClicked();
-        int to = gameSpaces.getIndexClicked();
+        int from = 0;
+        int to = 0;
 
         if (validFly(from, to))
         {
@@ -213,7 +210,7 @@ public class Game : Photon.MonoBehaviour {
     {
         Debug.Log("remove piece");
 
-        int pieceToRemove = gameSpaces.getIndexClicked();
+        int pieceToRemove = 0;
 
         if (gameBoard.isLocalPlayerPieceAt(pieceToRemove) == true
             && (!piecePartOfMill(pieceToRemove) || allPiecesPartOfMill()))
