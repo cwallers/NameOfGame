@@ -19,6 +19,10 @@ public class MainMenuButton : MonoBehaviour {
         {
             SceneManager.LoadScene("GameBoard");
         }
+        if (current.name == "multiplayer")
+        {
+            SceneManager.LoadScene("Multiplayer");
+        }
     }
     public void OnMouseExit()
     {
