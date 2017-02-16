@@ -23,3 +23,5 @@
 /Users/paultoillion/Desktop/NameOfGame/Pastry Pandemonium/Temp/bin/Debug/Assembly-CSharp.dll
 /Users/paultoillion/Desktop/NameOfGame/Pastry Pandemonium/obj/Debug/Assembly-CSharp.dll
 /Users/paultoillion/Desktop/NameOfGame/Pastry Pandemonium/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/paultoillion/Desktop/NameOfGame/Pastry Pandemonium/Temp/bin/Debug/UnityEngine.Purchasing.dll
+/Users/paultoillion/Desktop/NameOfGame/Pastry Pandemonium/Temp/bin/Debug/UnityEngine.Advertisements.dll
