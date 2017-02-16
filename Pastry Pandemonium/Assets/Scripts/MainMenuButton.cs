@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainMenuButton : MonoBehaviour {
 
     public GameObject current;
+    public GameObject canvas;
 
 
     public void OnMouseEnter()
@@ -17,7 +18,9 @@ public class MainMenuButton : MonoBehaviour {
     {
         if (current.name == "singlePlayer")
         {
-            SceneManager.LoadScene("GameBoard");
+            //SceneManager.LoadScene("GameBoard");
+            canvas.SetActive(true);
+            
         }
         if (current.name == "multiplayer")
         {
