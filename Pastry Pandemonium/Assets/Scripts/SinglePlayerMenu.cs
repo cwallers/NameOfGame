@@ -10,7 +10,7 @@ public class SinglePlayerMenu : MonoBehaviour {
 
     public void OnMouseEnter()
     {
-        LeanTween.scale(current, new Vector3(.35f, .35f, .35f), .075f);
+        LeanTween.scale(current, new Vector3(0.5f, .5f, .5f), .075f);
     }
 
     private void Awake()
@@ -31,7 +31,7 @@ public class SinglePlayerMenu : MonoBehaviour {
 
     public void OnMouseExit()
     {
-        LeanTween.scale(current, new Vector3(0.3104686f, 0.3104686f, 0.3104686f), .05f);
+        LeanTween.scale(current, new Vector3(0.4268945f, 0.4268945f, 0.4268945f), .05f);
 
     }
 
