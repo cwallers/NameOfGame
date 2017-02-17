@@ -5,54 +5,104 @@ using UnityEngine;
 using UnityEngine.UI;
 using Eppy;
 
-public class Game : MonoBehaviour {
+public class Game : Photon.MonoBehaviour
+{
 
-    public static bool isLocalPlayer = true;
+    App appInstance = null;
 
-    private static Game gameInstance = null;
+    public static Game gameInstance = null;
 
+    private int input, pieceCount, moveToIndex;
     private Board gameBoard = new Board();
     private MoveLookup gameBoardMoves = new MoveLookup();
-    private Player localPlayer = new Player();
+
+    public static Player localPlayer;
+    public static Player opponentPlayer;
+
+
+
+
     private List<Tuple<int, int>> moves = new List<Tuple<int, int>>(gameInstance.gameBoardMoves.Moves);
     private List<Tuple<int, int, int>> mills = new List<Tuple<int, int, int>>(gameInstance.gameBoardMoves.Mills);
 
-    public static Game getInstance
+
+    private void Awake()
     {
-        get
+        if (gameInstance == null)
         {
-            if (gameInstance == null)
-            {
-                gameInstance = new Game();
-            }
-            return gameInstance;
+            gameInstance = this;
         }
-    }
+        else if (gameInstance != this)
+            //Destroy(gameInstance);
 
+        localPlayer = App.localPlayer;
+        opponentPlayer = App.opponentPlayer;
 
-    public void initialize()
-    {
 
     }
 
     public void placePiece()
     {
-        int index = localPlayer.getMoveTo();
+        Debug.Log("place piece");
 
-        if(gameBoard.isEmptySpotAt(index))
+        int index = 0;
+
+        if (gameBoard.isEmptySpotAt(index))
         {
             gameBoard.placePiece(index);
 
-            if(createdMill(index))
+            if (createdMill(index))
             {
                 removePiece();
             }
+            appInstance.changePlayer();
         }
     }
 
+    //public void UpdatePlacePiece()
+    //{
+    //    if (!photonView.isMine)
+    //    {
+    //        return;
+    //    }
+    //    if (PhotonNetwork.offlineMode)
+    //    {
+    //        ai place piece
+    //            }
+    //    send move
+    //            else
+    //            {
+    //        photonView.RPC(
+    //            "placePiece",
+    //            PhotonTargets.OthersBuffered,
+    //            moveToIndex
+    //            );
+    //    }
+
+
+    //public void placePiece()
+    //{
+    //    Debug.Log("place piece");
+
+    //   int index = gameSpaces.getIndexClicked();
+
+    //    Debug.Log(index);
+
+    //    if (gameBoard.isEmptySpotAt(index))
+    //    {
+    //        gameBoard.placePiece(index);
+
+    //        if (createdMill(index))
+    //        {
+    //            removePiece();
+    //        }
+    //        appInstance.changePlayer();
+    //    }
+    //}
+
     public bool gameOver()
     {
-        if (localPlayer.getPieceCount() <= 2 || !localPlayerCanMove())
+        if (localPlayer.getPieceCount() <= 2 || !playerCanMove())
             return true;
         else
         {
@@ -72,12 +122,18 @@ public class Game : MonoBehaviour {
         }
     }
 
+    public bool isDraw()
+    {
+        return false;
+    }
+
     public void movePiece()
     {
+        Debug.Log("move piece");
         int from = localPlayer.getMoveFrom();
         int to = localPlayer.getMoveTo();
 
-        if(validMove(from, to))
+        if (validMove(from, to))
         {
             gameBoard.movePiece(from, to);
 
@@ -85,6 +141,7 @@ public class Game : MonoBehaviour {
             {
                 removePiece();
             }
+            appInstance.changePlayer();
         }
         else
         {
@@ -94,8 +151,10 @@ public class Game : MonoBehaviour {
 
     public void flyPiece()
     {
-        int from = localPlayer.getMoveFrom();
-        int to = localPlayer.getMoveTo();
+        Debug.Log("move piece");
+
+        int from = 0;
+        int to = 0;
 
         if (validFly(from, to))
         {
@@ -105,16 +164,16 @@ public class Game : MonoBehaviour {
             {
                 removePiece();
             }
+            appInstance.changePlayer();
         }
         else
         {
             Debug.Log("Invalid Fly");
-            flyPiece();
         }
 
     }
 
-    public bool localPlayerCanMove()
+    public bool playerCanMove()
     {
         BitArray boardConfig = gameBoard.findEmptySpots();
 
@@ -122,7 +181,7 @@ public class Game : MonoBehaviour {
 
         for (int i = 0; i < 24; i++)
         {
-            // enter if player has piece at this spot
+            //  enter if player has piece at this spot
             if (playerConfig[i] == true)
             {
                 for (int j = 0; i < 24; ++i)
@@ -140,20 +199,17 @@ public class Game : MonoBehaviour {
         return false;
     }
 
-    public void finalize()
-    {
-
-    }
 
     private bool removePiece()
     {
-        //unfinished
-        int pieceToRemove = localPlayer.getPieceToRemove();
+        Debug.Log("remove piece");
+
+        int pieceToRemove = 0;
 
         if (gameBoard.isLocalPlayerPieceAt(pieceToRemove) == true
             && (!piecePartOfMill(pieceToRemove) || allPiecesPartOfMill()))
         {
-            gameBoard.removePiece(!isLocalPlayer, pieceToRemove);
+            gameBoard.removePiece(!App.isLocalPlayerTurn, pieceToRemove);
             return true;
         }
         return false;
@@ -173,7 +229,7 @@ public class Game : MonoBehaviour {
         return false;
     }
 
-    private bool validMove(int from, int to)
+    public bool validMove(int from, int to)
     {
         if (gameBoard.isLocalPlayerPieceAt(from) == true)
         {
@@ -188,7 +244,6 @@ public class Game : MonoBehaviour {
         return false;
     }
 
-    //   //are you allowed to fly there?
     private bool validFly(int from, int to)
     {
         if ((gameBoard.isLocalPlayerPieceAt(from) == true) &&
@@ -226,6 +281,6 @@ public class Game : MonoBehaviour {
         return (pieceCount == localPlayer.getPieceCount());
     }
 
-    private Game()
-    { }
+
 }
+
