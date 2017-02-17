@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class SinglePlayerMenu : MonoBehaviour {
 
     public GameObject current, character;
-    private GameObject moveAi, moveUser, difficultyNormal, difficultyHard, menu, multiplayer, tutorial, options;
+    private GameObject moveAi, moveUser, difficultyNormal, difficultyHard, menu, singlePlayer, multiplayer, tutorial, options;
 	private GameObject[] players;
 
     public void OnMouseEnter()
@@ -37,6 +37,7 @@ public class SinglePlayerMenu : MonoBehaviour {
 		multiplayer = GameObject.FindGameObjectWithTag("multiplayer");
 		tutorial = GameObject.FindGameObjectWithTag("tutorial");
 		options = GameObject.FindGameObjectWithTag("options");
+		singlePlayer = GameObject.FindGameObjectWithTag("singleplayer");
 
 		players = GameObject.FindGameObjectsWithTag ("Player");
 		for(int i = 0; i < players.Length; i++)
@@ -81,11 +82,12 @@ public class SinglePlayerMenu : MonoBehaviour {
 					difficultyNormal.GetComponent<Renderer> ().enabled = false;
 					difficultyHard.GetComponent<Renderer> ().enabled = true;
 					break;
-				case "menuButton":
-					menu.SetActive (false);
-					multiplayer.SetActive(true);
-					tutorial.SetActive (true);
-					options.SetActive (true);
+			case "menuButton":
+				menu.SetActive (false);
+				multiplayer.SetActive (true);
+				tutorial.SetActive (true);
+				options.SetActive (true);
+				singlePlayer.SetActive (true);
 					break;
 				default:
 					break;          
